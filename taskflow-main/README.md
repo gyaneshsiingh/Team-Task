@@ -9,7 +9,7 @@
 **Keywords:** Task Management, Todo List, Productivity App, React Application, MERN Stack, Project Management, Team Collaboration, Free Task Manager
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=vercel)](https://taskflow-sagar.vercel.app/)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/SagarSuryakantWaghmare/taskflow)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/gyaneshsingh09/taskflow)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)](https://reactjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-Express-green?style=for-the-badge&logo=node.js)](https://nodejs.org/)
@@ -154,7 +154,7 @@ Experience TaskFlow without signing up! Use our demo account to explore all feat
 #### 1. Clone the Repository
 ```bash
 # Clone TaskFlow repository
-git clone https://github.com/SagarSuryakantWaghmare/taskflow.git
+git clone https://github.com/gyaneshsingh09/taskflow.git
 cd taskflow
 ```
 
@@ -479,13 +479,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-### Sagar Suryakant Waghmare
+### Gyanesh Singh
 *Full Stack Developer*
 
-[![GitHub](https://img.shields.io/badge/GitHub-SagarSuryakantWaghmare-black?style=for-the-badge&logo=github)](https://github.com/SagarSuryakantWaghmare)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-sagarwaghmare44-blue?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/sagarwaghmare44)
-[![Email](https://img.shields.io/badge/Email-sagarwaghmare1384@gmail.com-red?style=for-the-badge&logo=gmail)](mailto:sagarwaghmare1384@gmail.com)
-[![Behance](https://img.shields.io/badge/Behance-sagarwaghmare-blue?style=for-the-badge&logo=behance)](https://www.behance.net/sagarwaghmare)
+[![GitHub](https://img.shields.io/badge/GitHub-gyaneshsingh09-black?style=for-the-badge&logo=github)](https://github.com/gyaneshsingh09)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-gyaneshsingh-blue?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/gyaneshsingh)
+[![Email](https://img.shields.io/badge/Email-gyaneshsingh@gmail.com-red?style=for-the-badge&logo=gmail)](mailto:gyaneshsingh@gmail.com)
+[![Behance](https://img.shields.io/badge/Behance-sagarwaghmare-blue?style=for-the-badge&logo=behance)](https://www.behance.net/gyaneshsingh)
 
 </div>
 
@@ -503,8 +503,8 @@ Passionate full-stack developer with expertise in modern web technologies. Speci
 
 **⭐ If you found this project helpful, please give it a star! ⭐**
 
-**🚀 [Visit TaskFlow Live](https://taskflow-indol-six.vercel.app) | 📖 [Read the Docs](#) | 🐛 [Report Bug](https://github.com/SagarSuryakantWaghmare/taskflow/issues)**
+**🚀 [Visit TaskFlow Live](https://taskflow-indol-six.vercel.app) | 📖 [Read the Docs](#) | 🐛 [Report Bug](https://github.com/gyaneshsingh09/taskflow/issues)**
 
-Made with ❤️ by [Sagar Waghmare](https://github.com/SagarSuryakantWaghmare)
+Made with ❤️ by [Gyanesh Singh](https://github.com/gyaneshsingh09)
 
 </div>

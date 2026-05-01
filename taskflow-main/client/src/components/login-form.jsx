@@ -45,12 +45,14 @@ export function LoginForm({
       console.log("Login response:", response.data);
 
       if (response.data.success) {
-        setSuccess("Login successful! Redirecting...");
-        // Store token in localStorage
+        // Store token and role in localStorage
         const token = response.data.data?.token || response.data.token;
+        const role = response.data.data?.user?.role || 'member';
         if (token) {
           localStorage.setItem('token', token);
+          localStorage.setItem('userRole', role);
         }
+        setSuccess(`Login successful! Signed in as ${role}. Redirecting...`);
         // Navigate to dashboard after 2 seconds
         setTimeout(() => {
           window.location.href = '/dashboard';

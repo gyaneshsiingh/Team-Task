@@ -94,7 +94,7 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section id="features" className=" container space-y-6 bg-black py-8 md:py-12 lg:py-24">
+    <section id="features" className="w-full space-y-6 bg-black py-8 md:py-12 lg:py-24">
       <div className="mx-auto flex max-w-[980px] flex-col items-center gap-4">
         <h2 className="text-center text-3xl font-bold leading-[1.1] sm:text-3xl md:text-6xl text-white">
           Everything you need to stay <span className="text-blue-400">organized</span>

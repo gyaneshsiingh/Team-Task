@@ -28,8 +28,10 @@ import {
   Zap
 } from 'lucide-react';
 import api from "@/lib/api"
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   // Get the profile information
   const [user, setUser] = useState(null);
   const getUser = localStorage.getItem('token');
@@ -44,6 +46,8 @@ const Dashboard = () => {
 
   // Everything for the token and apiconfig for every api
   const token = localStorage.getItem('token');
+  const userRole = localStorage.getItem('userRole') || 'member';
+  const isAdmin = userRole === 'admin';
   const apiConfig = { headers: { Authorization: `Bearer ${token}` } };
 
   // State management
@@ -55,13 +59,9 @@ const Dashboard = () => {
       window.location.href = '/login';
       return;
     }
-    if (!userId) return; 
 
     setLoadingTasks(true);
-    api.get('/todos', {
-      ...apiConfig,
-      params: { userId }
-    })
+    api.get('/todos', apiConfig)
       .then(res => {
         let todos = [];
         if (res.data && res.data.data && Array.isArray(res.data.data.todos)) {
@@ -114,6 +114,7 @@ const Dashboard = () => {
   const [editingCategory, setEditingCategory] = useState(null);
   const [filterBy, setFilterBy] = useState('all');
   const [notifications, setNotifications] = useState([]);
+  const [allUsers, setAllUsers] = useState([]); // for admin task assignment
 
   // Task form state
   const [taskForm, setTaskForm] = useState({
@@ -121,8 +122,19 @@ const Dashboard = () => {
     description: '',
     dueDate: '',
     priority: 'medium',
-    category: ''
+    category: '',
+    assignedTo: '',
   });
+
+  // Fetch all users for admin task assignment
+  useEffect(() => {
+    if (!isAdmin || !token) return;
+    api.get('/auth/users', apiConfig)
+      .then(res => {
+        if (res.data?.data?.users) setAllUsers(res.data.data.users);
+      })
+      .catch(() => {});
+  }, [isAdmin, token]);
 
   // Category form state
   const [categoryForm, setCategoryForm] = useState({
@@ -156,11 +168,12 @@ const Dashboard = () => {
         description: task.description || '',
         dueDate: task.dueDate ? task.dueDate.split('T')[0] : '',
         priority: task.priority || 'medium',
-        category: task.category || ''
+        category: task.category || '',
+        assignedTo: task.assignedTo?._id || task.assignedTo || '',
       });
     } else {
       setEditingTask(null);
-      setTaskForm({ title: '', description: '', dueDate: '', priority: 'medium', category: '' });
+      setTaskForm({ title: '', description: '', dueDate: '', priority: 'medium', category: '', assignedTo: '' });
     }
     setShowTaskModal(true);
   };
@@ -214,12 +227,13 @@ const Dashboard = () => {
       dueDate: taskForm.dueDate || undefined,
       priority: taskForm.priority || 'medium',
       category: taskForm.category || 'general',
+      assignedTo: taskForm.assignedTo || undefined,
     };
 
     api.post('/todos', newTask, apiConfig)
       .then(res => {
         setTasks(prev => [...prev, res.data.data.todo]);
-        setTaskForm({ title: '', description: '', dueDate: '', priority: 'medium', category: '' });
+        setTaskForm({ title: '', description: '', dueDate: '', priority: 'medium', category: '', assignedTo: '' });
         setShowTaskModal(false);
         showNotification('Task added successfully!');
       })
@@ -239,7 +253,7 @@ const Dashboard = () => {
           task.id === updatedTask._id || task.id === updatedTask.id ? { ...task, ...updatedTask, id: updatedTask._id || updatedTask.id } : task
         ));
         setEditingTask(null);
-        setTaskForm({ title: '', description: '', dueDate: '', priority: 'medium', category: '' });
+        setTaskForm({ title: '', description: '', dueDate: '', priority: 'medium', category: '', assignedTo: '' });
         setShowTaskModal(false);
         showNotification('Task updated successfully!');
       })
@@ -401,7 +415,7 @@ const Dashboard = () => {
   const stats = getStats();
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white" style={{ background: 'hsl(220,20%,6%)' }}>
       {/* Hamburger Menu Button - Fixed position on left for mobile */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -416,16 +430,16 @@ const Dashboard = () => {
         <div className={`
           fixed inset-y-0 left-0 z-40 w-72 transform transition-transform duration-300 ease-in-out
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-          bg-gray-900/95 backdrop-blur-xl border-r border-gray-800 shadow-2xl
+          bg-[hsl(220,18%,9%)]/95 backdrop-blur-xl border-r border-blue-900/40 shadow-2xl
           md:static md:translate-x-0 md:w-72
         `}>
           <div className="h-full flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
             {/* Sidebar Header */}
-            <div className="px-6 py-6 border-b border-gray-800 sticky top-0 bg-gray-900/95 backdrop-blur-xl z-10">
+            <div className="px-6 py-6 border-b border-blue-900/40 sticky top-0 bg-[hsl(220,18%,9%)]/95 backdrop-blur-xl z-10">
               <div className="flex items-center justify-between">
                 <button
                   onClick={() => setSidebarOpen(false)}
-                  className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 md:hidden"
+                  className="p-2 rounded-xl text-blue-400 hover:text-white hover:bg-blue-900/50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 md:hidden"
                 >
                   <X size={22} />
                 </button>
@@ -437,18 +451,33 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <p className="text-base font-semibold text-white">{user?.name || 'User'}</p>
-                  <p className="text-xs text-gray-300">Welcome back!</p>
+                  <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full mt-0.5 ${
+                    isAdmin
+                      ? 'bg-purple-600/30 text-purple-300 border border-purple-500/40'
+                      : 'bg-blue-600/30 text-blue-300 border border-blue-500/40'
+                  }`}>
+                    {isAdmin ? (
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                    ) : (
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    )}
+                    {isAdmin ? 'Admin' : 'Member'}
+                  </span>
                 </div>
               </div>
             </div>
 
             {/* Navigation */}
-            <div className="px-4 py-6 bg-gray-900/95 backdrop-blur-xl">
+            <div className="px-4 py-6 bg-[hsl(220,18%,9%)]/95 backdrop-blur-xl">
               <div className="space-y-3">
                 <button
                   onClick={() => { setCurrentView('dashboard'); setSidebarOpen(false); }}
-                  className={`w-full text-left px-4 py-3 rounded-xl text-base font-semibold transition-all flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:bg-blue-600/20
-                    ${currentView === 'dashboard' ? 'bg-blue-600 text-white shadow-lg' : 'hover:bg-gray-800/80 hover:scale-[1.02] text-gray-300'}
+                  className={`w-full text-left px-4 py-3 rounded-xl text-base font-semibold transition-all flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50
+                    ${currentView === 'dashboard' ? 'bg-blue-600 text-white shadow-lg' : 'hover:bg-blue-900/40 hover:scale-[1.02] text-blue-200'}
                   `}
                 >
                   <Home size={18} className="mr-2" />
@@ -456,8 +485,8 @@ const Dashboard = () => {
                 </button>
                 <button
                   onClick={() => { setCurrentView('tasks'); setSidebarOpen(false); }}
-                  className={`w-full text-left px-4 py-3 rounded-xl text-base font-semibold transition-all flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:bg-blue-600/20
-                    ${currentView === 'tasks' ? 'bg-blue-600 text-white shadow-lg' : 'hover:bg-gray-800/80 hover:scale-[1.02] text-gray-300'}
+                  className={`w-full text-left px-4 py-3 rounded-xl text-base font-semibold transition-all flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50
+                    ${currentView === 'tasks' ? 'bg-blue-600 text-white shadow-lg' : 'hover:bg-blue-900/40 hover:scale-[1.02] text-blue-200'}
                   `}
                 >
                   <CheckSquare size={18} className="mr-2" />
@@ -465,17 +494,24 @@ const Dashboard = () => {
                 </button>
                 <button
                   onClick={() => { setCurrentView('categories'); setSidebarOpen(false); }}
-                  className={`w-full text-left px-4 py-3 rounded-xl text-base font-semibold transition-all flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:bg-blue-600/20
-                    ${currentView === 'categories' ? 'bg-blue-600 text-white shadow-lg' : 'hover:bg-gray-800/80 hover:scale-[1.02] text-gray-300'}
+                  className={`w-full text-left px-4 py-3 rounded-xl text-base font-semibold transition-all flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50
+                    ${currentView === 'categories' ? 'bg-blue-600 text-white shadow-lg' : 'hover:bg-blue-900/40 hover:scale-[1.02] text-blue-200'}
                   `}
                 >
                   <Folder size={18} className="mr-2" />
                   Categories
                 </button>
+                <button
+                  onClick={() => { navigate('/projects'); setSidebarOpen(false); }}
+                  className="w-full text-left px-4 py-3 rounded-xl text-base font-semibold transition-all flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 hover:bg-blue-900/40 hover:scale-[1.02] text-blue-200"
+                >
+                  <Target size={18} className="mr-2" />
+                  Projects
+                </button>
               </div>
             </div>
 
-            <div className="flex-1 px-4 py-6 overflow-y-auto scrollbar-thin bg-gray-900/95 backdrop-blur-xl scrollbar-thumb-gray-700 scrollbar-track-gray-900">
+            <div className="flex-1 px-4 py-6 overflow-y-auto scrollbar-thin bg-[hsl(220,18%,9%)]/95 backdrop-blur-xl scrollbar-thumb-violet-800 scrollbar-track-transparent">
               <div className="space-y-2">
                 <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
                   Quick Filters
@@ -483,7 +519,7 @@ const Dashboard = () => {
                 <button
                   onClick={() => { setFilterBy('all'); setCurrentView('tasks'); setSidebarOpen(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                    filterBy === 'all' ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-gray-800/80 text-gray-300'
+                    filterBy === 'all' ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-blue-900/40 text-blue-300'
                   }`}
                 >
                   All Tasks
@@ -491,7 +527,7 @@ const Dashboard = () => {
                 <button
                   onClick={() => { setFilterBy('today'); setCurrentView('tasks'); setSidebarOpen(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                    filterBy === 'today' ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-gray-800/80 text-gray-300'
+                    filterBy === 'today' ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-blue-900/40 text-blue-300'
                   }`}
                 >
                   Today
@@ -499,7 +535,7 @@ const Dashboard = () => {
                 <button
                   onClick={() => { setFilterBy('upcoming'); setCurrentView('tasks'); setSidebarOpen(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                    filterBy === 'upcoming' ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-gray-800/80 text-gray-300'
+                    filterBy === 'upcoming' ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-blue-900/40 text-blue-300'
                   }`}
                 >
                   Upcoming
@@ -507,7 +543,7 @@ const Dashboard = () => {
                 <button
                   onClick={() => { setFilterBy('completed'); setCurrentView('tasks'); setSidebarOpen(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                    filterBy === 'completed' ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-gray-800/80 text-gray-300'
+                    filterBy === 'completed' ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-blue-900/40 text-blue-300'
                   }`}
                 >
                   Completed
@@ -524,7 +560,7 @@ const Dashboard = () => {
                       key={category.id}
                       onClick={() => { setFilterBy(category.name); setCurrentView('tasks'); setSidebarOpen(false); }}
                       className={`flex items-center justify-between w-full px-3 py-2 rounded-lg transition-all text-left ${
-                        filterBy === category.name ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-gray-800/80 text-gray-300'
+                        filterBy === category.name ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-blue-900/40 text-blue-300'
                       }`}
                     >
                       <div className="flex items-center">
@@ -543,14 +579,21 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="px-4 py-6 border-t border-gray-800 bg-gray-900/95 backdrop-blur-xl">
-              <button
-                onClick={() => openCategoryModal()}
-                className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all text-sm font-semibold shadow-lg"
-              >
-                <Plus size={16} className="mr-2" />
-                Add Category
-              </button>
+            <div className="px-4 py-6 border-t border-blue-900/40 bg-[hsl(220,18%,9%)]/95 backdrop-blur-xl">
+              {isAdmin && (
+                <button
+                  onClick={() => openCategoryModal()}
+                  className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all text-sm font-semibold shadow-lg"
+                >
+                  <Plus size={16} className="mr-2" />
+                  Add Category
+                </button>
+              )}
+              {!isAdmin && (
+                <div className="text-center text-xs text-gray-500 px-2 py-2 bg-gray-800/30 rounded-xl border border-gray-700/30">
+                  👁️ View-only mode — contact an Admin to create tasks
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -564,7 +607,7 @@ const Dashboard = () => {
         )}
 
         {/* Main Content */}
-        <div className="flex-1 min-h-screen bg-black">
+        <div className="flex-1 min-h-screen" style={{ background: 'hsl(220,20%,6%)' }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-20">
             {/* Dashboard View */}
             {currentView === 'dashboard' && (
@@ -631,7 +674,7 @@ const Dashboard = () => {
                     <h2 className="text-xl sm:text-2xl font-semibold text-white">Recent Tasks</h2>
                     <button
                       onClick={() => setCurrentView('tasks')}
-                      className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
+                      className="text-blue-400 hover:text-blue-200 text-sm font-medium transition-colors"
                     >
                       View All
                     </button>
@@ -704,7 +747,7 @@ const Dashboard = () => {
                         <button
                           onClick={() => setViewMode('list')}
                           className={`px-4 py-2 text-sm font-medium transition-all ${
-                            viewMode === 'list' ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-gray-800/80 text-gray-300'
+                            viewMode === 'list' ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-blue-900/40 text-blue-300'
                           }`}
                         >
                           <List size={16} />
@@ -712,21 +755,23 @@ const Dashboard = () => {
                         <button
                           onClick={() => setViewMode('kanban')}
                           className={`px-4 py-2 text-sm font-medium transition-all ${
-                            viewMode === 'kanban' ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-gray-800/80 text-gray-300'
+                            viewMode === 'kanban' ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-blue-900/40 text-blue-300'
                           }`}
                         >
                           <Grid size={16} />
                         </button>
                       </div>
 
-                      <button
-                        onClick={() => openTaskModal()}
-                        className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all flex items-center text-sm font-semibold shadow-lg"
-                      >
-                        <Plus size={16} className="mr-2" />
-                        <span className="hidden sm:inline">Add Task</span>
-                        <span className="sm:hidden">Add</span>
-                      </button>
+                      {isAdmin && (
+                        <button
+                           onClick={() => openTaskModal()}
+                           className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all flex items-center text-sm font-semibold shadow-lg"
+                        >
+                          <Plus size={16} className="mr-2" />
+                          <span className="hidden sm:inline">Add Task</span>
+                          <span className="sm:hidden">Add</span>
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -787,23 +832,38 @@ const Dashboard = () => {
                                 <span className={`px-3 py-1 rounded-full text-xs font-medium border ${priorityColors[task.priority]}`}>
                                   {task.priority}
                                 </span>
+                                {task.assignedTo && task.assignedTo.name && (
+                                  <span className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-purple-600/20 text-purple-300 border border-purple-500/30">
+                                    <User size={10} />
+                                    → {task.assignedTo.name}
+                                  </span>
+                                )}
+                                {task.userId && task.userId.name && task.userId._id !== user?._id && (
+                                  <span className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-gray-600/20 text-gray-400 border border-gray-600/30">
+                                    Assigned by {task.userId.name}
+                                  </span>
+                                )}
                               </div>
                             </div>
                             <div className="flex items-center space-x-2 flex-shrink-0">
-                              <button
-                                onClick={e => { e.stopPropagation(); openTaskModal(task); }}
-                                className="p-2 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all"
-                                aria-label="Edit task"
-                              >
-                                <Edit size={16} />
-                              </button>
-                              <button
-                                onClick={e => { e.stopPropagation(); deleteTask(task.id); }}
-                                className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
-                                aria-label="Delete task"
-                              >
-                                <Trash2 size={16} />
-                              </button>
+                              {isAdmin && (
+                                <>
+                                  <button
+                                    onClick={e => { e.stopPropagation(); openTaskModal(task); }}
+                                    className="p-2 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all"
+                                    aria-label="Edit task"
+                                  >
+                                    <Edit size={16} />
+                                  </button>
+                                  <button
+                                    onClick={e => { e.stopPropagation(); deleteTask(task.id); }}
+                                    className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
+                                    aria-label="Delete task"
+                                  >
+                                    <Trash2 size={16} />
+                                  </button>
+                                </>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -857,18 +917,22 @@ const Dashboard = () => {
                                           {task.title}
                                         </h4>
                                         <div className="flex space-x-1 flex-shrink-0">
-                                          <button
-                                            onClick={e => { e.stopPropagation(); openTaskModal(task); }}
-                                            className="p-1.5 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all"
-                                          >
-                                            <Edit size={12} />
-                                          </button>
-                                          <button
-                                            onClick={e => { e.stopPropagation(); deleteTask(task.id); }}
-                                            className="p-1.5 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
-                                          >
-                                            <Trash2 size={12} />
-                                          </button>
+                                          {isAdmin && (
+                                            <>
+                                              <button
+                                                onClick={e => { e.stopPropagation(); openTaskModal(task); }}
+                                                className="p-1.5 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all"
+                                              >
+                                                <Edit size={12} />
+                                              </button>
+                                              <button
+                                                onClick={e => { e.stopPropagation(); deleteTask(task.id); }}
+                                                className="p-1.5 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
+                                              >
+                                                <Trash2 size={12} />
+                                              </button>
+                                            </>
+                                          )}
                                         </div>
                                       </div>
                                       {task.description && (
@@ -931,14 +995,16 @@ const Dashboard = () => {
                       <p className="text-gray-400 text-lg">Manage your task categories</p>
                     </div>
 
-                    <button
-                      onClick={() => openCategoryModal()}
-                      className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all flex items-center text-sm font-semibold shadow-lg self-start sm:self-auto"
-                    >
-                      <Plus size={16} className="mr-2" />
-                      <span className="hidden sm:inline">Add Category</span>
-                      <span className="sm:hidden">Add</span>
-                    </button>
+                    {isAdmin && (
+                      <button
+                        onClick={() => openCategoryModal()}
+                       className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all flex items-center text-sm font-semibold shadow-lg self-start sm:self-auto"
+                      >
+                        <Plus size={16} className="mr-2" />
+                        <span className="hidden sm:inline">Add Category</span>
+                        <span className="sm:hidden">Add</span>
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -951,7 +1017,7 @@ const Dashboard = () => {
                           <h3 className="text-lg font-semibold truncate text-white">{category.name}</h3>
                         </div>
                         <div className="flex space-x-2 flex-shrink-0 ml-3">
-                          {!category.id.startsWith('default-') ? (
+                          {isAdmin && !category.id.startsWith('default-') ? (
                             <>
                               <button
                                 onClick={() => openCategoryModal(category)}
@@ -994,7 +1060,7 @@ const Dashboard = () => {
       {/* Task Modal */}
       {showTaskModal && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-950 rounded-2xl w-full max-w-md max-h-[90vh]  shadow-2xl border border-blue-800">
+          <div className="bg-gray-950 rounded-2xl w-full max-w-md max-h-[90vh] shadow-2xl border border-blue-700">
             {/* Modal Header */}
             <div className="flex items-center justify-between px-6 py-5 rounded-t-2xl bg-blue-800 border-b border-blue-700 sticky top-0 z-10">
               <h2 className="text-xl font-bold tracking-tight text-white">{editingTask ? 'Edit Task' : 'Add New Task'}</h2>
@@ -1084,6 +1150,27 @@ const Dashboard = () => {
                   Category
                 </label>
               </div>
+
+              {/* Assign To (Admin only) */}
+              {isAdmin && (
+                <div className="relative">
+                  <select
+                    value={taskForm.assignedTo}
+                    onChange={e => setTaskForm({ ...taskForm, assignedTo: e.target.value })}
+                    className="peer w-full px-4 pt-6 pb-2 border-2 border-purple-800 bg-purple-900/40 text-white rounded-xl focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400 text-base transition-all appearance-none"
+                  >
+                    <option value="">Assign to myself</option>
+                    {allUsers.map(u => (
+                      <option key={u._id} value={u._id}>
+                        {u.name} ({u.role})
+                      </option>
+                    ))}
+                  </select>
+                  <label className="absolute left-4 top-2 text-sm text-purple-300 font-medium pointer-events-none transition-all peer-focus:text-purple-300">
+                    🎯 Assign To
+                  </label>
+                </div>
+              )}
             </form>
 
             {/* Modal Actions */}
@@ -1236,11 +1323,11 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* Floating Add Task Button - Only visible on mobile when in tasks view */}
-      {currentView === 'tasks' && (
+      {/* Floating Add Task Button - Only visible on mobile when in tasks view, admin only */}
+      {currentView === 'tasks' && isAdmin && (
         <button
           onClick={() => openTaskModal()}
-          className="fixed bottom-6 right-6 w-14 h-14 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-colors flex items-center justify-center z-40 md:hidden"
+          className="fixed bottom-6 right-6 w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors flex items-center justify-center z-40 md:hidden"
           aria-label="Add new task"
         >
           <Plus size={24} />

@@ -11,7 +11,7 @@ export const generateToken=(userId)=>{
 // User registration controller
 export const register=async(req,res)=>{
     try {
-        const {name,email,password}=req.body;
+        const {name,email,password,role}=req.body;
         if(!name||!email||!password){
             return res.status(400).json({
                 success:false,
@@ -30,7 +30,8 @@ export const register=async(req,res)=>{
         const user=await User.create({
             name,
             email,
-            password
+            password,
+            role: role || 'member',
         });
         const token=generateToken(user._id);
         res.status(201).json({
@@ -40,7 +41,8 @@ export const register=async(req,res)=>{
                 user:{
                     id:user._id,
                     name:user.name,
-                    email:user.email
+                    email:user.email,
+                    role:user.role,
                 },
                 token
             }
@@ -93,7 +95,8 @@ export const login=async(req,res)=>{
                 user: {
                     id: user._id,
                     name: user.name,
-                    email: user.email
+                    email: user.email,
+                    role: user.role,
                 },
                 token
             }
@@ -136,3 +139,18 @@ export const logout=(req,res)=>{
     })
 }
 
+// Get all users (admin only - for task assignment)
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({}, 'name email role _id');
+        res.status(200).json({
+            success: true,
+            data: { users }
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}

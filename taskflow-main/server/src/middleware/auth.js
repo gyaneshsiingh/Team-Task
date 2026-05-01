@@ -22,7 +22,7 @@ export const protect=async(req,res,next)=>{
                 message:'Invalid token. User not found'
             });
         }
-        req.user={id:user._id,name:user.name,email:user.email};
+        req.user={id:user._id, name:user.name, email:user.email, role:user.role};
         next();
     }
     catch(error){
@@ -32,5 +32,19 @@ export const protect=async(req,res,next)=>{
         })
     }
 }
+
+// Role-based access control middleware
+// Usage: requireRole('admin') or requireRole('admin','member')
+export const requireRole = (...roles) => {
+    return (req, res, next) => {
+        if (!req.user || !roles.includes(req.user.role)) {
+            return res.status(403).json({
+                success: false,
+                message: `Access denied. Required role: ${roles.join(' or ')}.`,
+            });
+        }
+        next();
+    };
+};
 
 export default protect;

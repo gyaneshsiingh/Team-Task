@@ -39,7 +39,7 @@ export default function TermsPage() {
             </div>
             <div className="py-4 sm:py-6">
               <h2 className="font-bold text-white mb-2 text-base sm:text-lg">Contact</h2>
-              <p className="text-gray-300 text-sm sm:text-base">If you have any questions about these terms, contact us at <a href="mailto:sagarwaghmare1384@gmail.com" className="text-blue-400 underline">sagarwaghmare1384@gmail.com</a>.</p>
+              <p className="text-gray-300 text-sm sm:text-base">If you have any questions about these terms, contact us at <a href="mailto:gyaneshsingh@gmail.com" className="text-blue-400 underline">gyaneshsingh@gmail.com</a>.</p>
             </div>
           </div>
           <div className="flex justify-center mt-8 sm:mt-10">

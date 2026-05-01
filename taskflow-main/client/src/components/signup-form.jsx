@@ -18,6 +18,7 @@ export function SignupForm({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [role, setRole] = useState("member");
 
   const submitHandle = async (e) => {
     e.preventDefault();
@@ -47,6 +48,7 @@ export function SignupForm({
         name: data.name,
         email: data.email,
         password: data.password,
+        role,
       });
 
       console.log("Signup response:", response.data);
@@ -78,7 +80,7 @@ export function SignupForm({
   }
 
   return (
-    <div className={cn("flex flex-col gap-6 w-full max-w-sm mx-auto", className)} {...props}>
+    <div className={cn("flex flex-col gap-6 w-full", className)} {...props}>
       <Card className="border-gray-800 bg-gray-900/90 backdrop-blur-sm shadow-2xl">
         <CardHeader className="text-center space-y-2">
           <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg">
@@ -154,6 +156,62 @@ export function SignupForm({
                 disabled={isLoading}
                 className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 h-11 rounded-lg transition-all duration-200"
               />
+            </div>
+
+            {/* Role Selector */}
+            <div className="space-y-2">
+              <Label className="text-gray-300 text-sm font-medium">Account Role</Label>
+              <div className="grid grid-cols-2 gap-3 mt-1">
+                {/* Member option */}
+                <button
+                  type="button"
+                  onClick={() => setRole("member")}
+                  disabled={isLoading}
+                  className={`relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200 cursor-pointer disabled:opacity-50
+                    ${role === "member"
+                      ? "border-blue-500 bg-blue-500/10 shadow-lg shadow-blue-500/10"
+                      : "border-gray-700 bg-gray-800/40 hover:border-gray-500 hover:bg-gray-800/60"}`}
+                >
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-200
+                    ${role === "member" ? "bg-blue-600" : "bg-gray-700"}`}>
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  <div className="text-center">
+                    <p className={`text-sm font-semibold ${role === "member" ? "text-blue-400" : "text-gray-300"}`}>Member</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Join & collaborate</p>
+                  </div>
+                  {role === "member" && (
+                    <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-blue-500" />
+                  )}
+                </button>
+
+                {/* Admin option */}
+                <button
+                  type="button"
+                  onClick={() => setRole("admin")}
+                  disabled={isLoading}
+                  className={`relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200 cursor-pointer disabled:opacity-50
+                    ${role === "admin"
+                      ? "border-purple-500 bg-purple-500/10 shadow-lg shadow-purple-500/10"
+                      : "border-gray-700 bg-gray-800/40 hover:border-gray-500 hover:bg-gray-800/60"}`}
+                >
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-200
+                    ${role === "admin" ? "bg-purple-600" : "bg-gray-700"}`}>
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <div className="text-center">
+                    <p className={`text-sm font-semibold ${role === "admin" ? "text-purple-400" : "text-gray-300"}`}>Admin</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Manage & control</p>
+                  </div>
+                  {role === "admin" && (
+                    <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-purple-500" />
+                  )}
+                </button>
+              </div>
             </div>
             <Button 
               type="submit" 

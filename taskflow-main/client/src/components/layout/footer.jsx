@@ -12,7 +12,7 @@ export default function Footer() {
 
   // Handle contribute button click
   const handleContribute = () => {
-    window.open('https://github.com/SagarSuryakantWaghmare/taskflow', '_blank');
+    window.open('https://github.com/gyaneshsingh09/taskflow', '_blank');
   };
 
   return (
@@ -36,7 +36,7 @@ export default function Footer() {
               </p>
               <div className="flex flex-col w-full sm:flex-row sm:space-x-3 space-y-3 sm:space-y-0 items-center sm:items-start">
                 <a 
-                  href="https://github.com/SagarSuryakantWaghmare/taskflow"
+                  href="https://github.com/gyaneshsingh09/taskflow"
                   target="_blank"
                   rel="noreferrer"
                   className="group w-full sm:w-auto"
@@ -110,7 +110,7 @@ export default function Footer() {
                     <Github className="h-4 w-4 text-blue-400" />
                   </div>
                   <a 
-                    href="https://github.com/SagarSuryakantWaghmare" 
+                    href="https://github.com/gyaneshsingh09" 
                     target="_blank"
                     rel="noreferrer"
                     className="text-gray-300 hover:text-white transition-colors group"
@@ -124,7 +124,7 @@ export default function Footer() {
                     <Linkedin className="h-4 w-4 text-blue-400" />
                   </div>
                   <a 
-                    href="https://linkedin.com/in/sagarwaghmare44" 
+                    href="https://linkedin.com/in/gyaneshsingh" 
                     target="_blank"
                     rel="noreferrer"
                     className="text-gray-300 hover:text-blue-400 transition-colors group"
@@ -138,7 +138,7 @@ export default function Footer() {
                     <Mail className="h-4 w-4 text-blue-400" />
                   </div>
                   <a 
-                    href="mailto:sagarwaghmare1384@gmail.com" 
+                    href="mailto:gyaneshsingh@gmail.com" 
                     className="text-gray-300 hover:text-green-400 transition-colors group"
                   >
                     Email
@@ -149,7 +149,7 @@ export default function Footer() {
                     <span className="text-blue-400 font-mono text-sm font-bold">Be</span>
                   </div>
                   <a 
-                    href="https://www.behance.net/sagarwaghmare" 
+                    href="https://www.behance.net/gyaneshsingh" 
                     target="_blank"
                     rel="noreferrer"
                     className="text-gray-300 hover:text-blue-400 transition-colors group"
@@ -187,12 +187,12 @@ export default function Footer() {
               <div className="text-sm text-gray-300">
                 Crafted with <span className="text-red-500">❤️</span> by{' '}
                 <a 
-                  href="https://github.com/SagarSuryakantWaghmare" 
+                  href="https://github.com/gyaneshsingh09" 
                   target="_blank"
                   rel="noreferrer"
                   className="text-blue-400 hover:text-blue-300 transition-colors font-medium group"
                 >
-                  Sagar Waghmare
+                  Gyanesh Singh
                   <ExternalLink className="h-3 w-3 ml-1 opacity-60 group-hover:opacity-100 inline" />
                 </a>
               </div>

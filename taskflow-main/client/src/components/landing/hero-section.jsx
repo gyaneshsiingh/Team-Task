@@ -12,7 +12,7 @@ export function HeroSection() {
   };
 
   return (
-    <section className="container z-1 relative bg-black">
+    <section className="w-full z-1 relative bg-black">
       <div className="mx-auto flex max-w-[980px] flex-col items-center gap-2 py-6 sm:py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20 px-2 sm:px-0">
         {/* Badge */}
         <Badge variant="outline" className="mb-4 bg-blue-600 border-blue-600 text-white text-xs sm:text-sm px-3 py-1">
