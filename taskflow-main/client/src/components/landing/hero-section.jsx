@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Heart, Star } from "lucide-react";
-import image from "@/assets/image.png";
 import { MacbookScroll } from "@/components/landing/macbook-scroll";
 import { CheckSquare } from "lucide-react";
 export function HeroSection() {
@@ -28,7 +27,7 @@ export function HeroSection() {
 
         {/* Subheading */}
         <p className="max-w-[750px] text-center text-base sm:text-lg text-gray-400 sm:text-xl px-1">
-          TaskFlow helps you manage your daily tasks, set priorities, and achieve your goals 
+          TaskFlow helps you manage your daily tasks, set priorities, and achieve your goals
           with a beautiful and intuitive interface. No hidden costs, no limitations.
         </p>
 
@@ -62,21 +61,21 @@ export function HeroSection() {
       </div>
       {/* Macbook Scroll Section */}
       <div className="w-full rounded-lg overflow-hidden bg-white dark:bg-[#0B0B0F] mt-6 sm:mt-10">
-      <MacbookScroll
-        title={
-          <span>
-            TaskFlow: Modern Task Management for Everyone.<br />
-            Built with ❤️ using Tailwind CSS.
-          </span>
-        }
-        badge={
-          <div className="h-10 w-10 -rotate-12 transform flex items-center justify-center bg-blue-600 rounded-full shadow-lg border-4 border-white">
-             <CheckSquare className="text-blue-500 mr-3 transition-all duration-300 group-hover:text-blue-400 w-7 h-7" size={28} />
-          </div>
-        }
-        src={image}
-        showGradient={false}
-      />
+        <MacbookScroll
+          title={
+            <span>
+              TaskFlow: Modern Task Management for Everyone.<br />
+              Built with ❤️ using Tailwind CSS.
+            </span>
+          }
+          badge={
+            <div className="h-10 w-10 -rotate-12 transform flex items-center justify-center bg-blue-600 rounded-full shadow-lg border-4 border-white">
+              <CheckSquare className="text-blue-500 mr-3 transition-all duration-300 group-hover:text-blue-400 w-7 h-7" size={28} />
+            </div>
+          }
+          src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=3270&auto=format&fit=crop"
+          showGradient={false}
+        />
       </div>
     </section>
   );
