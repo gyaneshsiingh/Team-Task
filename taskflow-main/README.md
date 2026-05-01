@@ -1,15 +1,15 @@
-# 🚀 TaskFlow - Modern Task Management Application | Free Todo List App | React Task Manager 2025
+# 🚀 TaskFlow - Team Task Management Application | RBAC | MERN Stack 2025
 
 <div align="center">
   
-![TaskFlow - Modern Task Management Application](screenshots/home.png)
+![TaskFlow - Team Task Management](screenshots/home.png)
 
-**A beautiful, modern task management application built with React, Node.js, and MongoDB - The ultimate productivity tool for teams and individuals**
+**A powerful, modern team task management application built with React, Node.js, and MongoDB — featuring Role-Based Access Control, task assignment, and real-time collaboration.**
 
-**Keywords:** Task Management, Todo List, Productivity App, React Application, MERN Stack, Project Management, Team Collaboration, Free Task Manager
+**Keywords:** Team Task Management, RBAC, Todo List, Productivity App, React, MERN Stack, Project Management, Team Collaboration, Admin Dashboard, Task Assignment
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=vercel)](https://taskflow-sagar.vercel.app/)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/gyaneshsingh09/taskflow)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=vercel)](https://taskflow-indol-six.vercel.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/gyaneshsiingh/taskflow)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)](https://reactjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-Express-green?style=for-the-badge&logo=node.js)](https://nodejs.org/)
@@ -17,367 +17,344 @@
 
 </div>
 
+---
+
 ## 🎯 What is TaskFlow?
 
-TaskFlow is a **free, open-source task management application** designed for modern teams and individuals who want to boost their productivity. Built with the latest web technologies including React, Node.js, and MongoDB, TaskFlow offers a seamless experience for managing tasks, projects, and daily workflows.
+TaskFlow is a **free, open-source team task management application** designed for teams and individuals who need structured collaboration with role-based access control. Built with the full MERN stack, TaskFlow lets **Admins** create and assign tasks to **Members**, while members get a focused view of only the work assigned to them.
 
 ### 🔍 Perfect for:
-- **Developers** managing coding projects and sprints
-- **Students** organizing assignments and study schedules  
-- **Teams** collaborating on projects and deadlines
-- **Freelancers** tracking client work and deliverables
-- **Anyone** looking for a beautiful, free alternative to paid task managers
+- **Dev Teams** managing sprints, bugs, and features across roles
+- **Project Managers** assigning and tracking work across team members
+- **Students** collaborating on group assignments
+- **Freelancers** delegating tasks across sub-contractors
+- **Startups** managing structured team workflows without expensive tools
+
+---
 
 ## 📋 Table of Contents
 
 - [🎯 What is TaskFlow?](#-what-is-taskflow)
 - [✨ Features & Benefits](#-features--benefits)
+- [🔐 Role-Based Access Control](#-role-based-access-control)
 - [🚀 Quick Start Guide](#-quick-start-guide)
-- [🎯 Live Demo & Examples](#-live-demo--examples)
-- [�️ Technology Stack](#️-technology-stack)
+- [🎯 Live Demo](#-live-demo)
+- [🛠️ Technology Stack](#️-technology-stack)
 - [📁 Project Architecture](#-project-architecture)
-- [🎨 Screenshots & UI Gallery](#-screenshots--ui-gallery)
-- [🔧 Setup & Configuration](#-setup--configuration)
+- [🎨 Screenshots](#-screenshots)
+- [🔧 Configuration](#-configuration)
 - [📱 API Reference](#-api-reference)
-- [🤝 Contributing & Community](#-contributing--community)
-- [📄 License & Legal](#-license--legal)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 - [👨‍💻 About the Developer](#-about-the-developer)
-- [🔗 Related Projects](#-related-projects)
+
+---
 
 ## ✨ Features & Benefits
 
-### 🎯 Core Task Management Features
-- **Smart Task Creation** - Quickly create tasks with rich descriptions, priorities, and categories
-- **Advanced Filtering** - Find tasks instantly with powerful search and filter options
-- **Priority Management** - Organize tasks by urgency with visual priority indicators (High, Medium, Low)
-- **Category Organization** - Create custom categories with color coding for better organization
-- **Due Date Tracking** - Never miss deadlines with calendar integration and notifications
-- **Task Status Management** - Track progress from todo → in-progress → completed
-- **Bulk Operations** - Edit, delete, or move multiple tasks simultaneously
-- **Task Archiving** - Keep completed tasks for reference while maintaining clean workspace
+### 🎯 Core Task Management
+- **Smart Task Creation** — Create tasks with title, description, priority, category, due date
+- **Task Assignment** — Admins can assign any task to any registered team member
+- **Priority Management** — Visual priority indicators: High 🔴, Medium 🟡, Low 🟢
+- **Category Organization** — Custom categories with color coding
+- **Due Date Tracking** — Calendar integration with overdue highlighting
+- **Task Status Flow** — `todo` → `in-progress` → `done`
+- **Task Archiving** — Archive completed tasks without losing history
+- **Kanban & List Views** — Switch between board and list layout
 
-### 🎨 Modern User Experience
-- **Dark Theme Design** - Beautiful, eye-friendly dark interface with blue accents
-- **Responsive Layout** - Works perfectly on desktop, tablet, and mobile devices
-- **Real-time Updates** - See changes instantly without page refreshes
-- **Smooth Animations** - Polished interactions with Framer Motion animations
-- **Intuitive Navigation** - Clean, user-friendly interface design
-- **Keyboard Shortcuts** - Power-user friendly with keyboard navigation support
-- **Accessibility** - WCAG compliant with screen reader support
+### 👥 Team Collaboration
+- **Role-Based Signup** — Users choose Admin or Member role at registration
+- **Admin Task Assignment** — Admins assign tasks directly to any member
+- **Shared Task Visibility** — Assigned tasks appear automatically in the member's dashboard
+- **Assignment Badges** — Tasks show "Assigned to [name]" and "Assigned by [name]" indicators
+- **Member View-Only Mode** — Members see tasks without create/edit/delete access
 
-### 🔒 Security & Performance
-- **JWT Authentication** - Industry-standard secure user authentication
-- **Data Privacy** - Your tasks are private and isolated from other users
-- **Fast Performance** - Optimized React frontend with efficient data loading
-- **Data Validation** - Comprehensive input validation on client and server
-- **Error Handling** - Graceful error recovery with user-friendly messages
-- **Cross-platform** - Works on Windows, macOS, Linux, iOS, and Android browsers
+### 🔒 Security & Authentication
+- **JWT Authentication** — Secure, stateless token-based auth with 7-day expiry
+- **Role-Aware Login** — Login response includes user role, stored for UI rendering
+- **Protected API Routes** — `requireRole('admin')` middleware guards admin-only endpoints
+- **Data Isolation** — Users only see tasks they created or were assigned to them
 
-### 🆓 Why Choose TaskFlow?
-- **100% Free Forever** - No premium plans, no feature limitations
-- **Open Source** - Transparent code you can audit and contribute to
-- **No Vendor Lock-in** - Export your data anytime
-- **Privacy Focused** - No tracking, no ads, no data selling
-- **Self-hostable** - Run on your own servers for complete control
-- **Modern Tech Stack** - Built with latest React, Node.js, and MongoDB
+### 🎨 Modern UI/UX
+- **Dark Theme** — Eye-friendly dark interface with blue/purple accents
+- **Role Badges** — 🟣 Admin (shield icon) / 🔵 Member (user icon) shown in sidebar
+- **Responsive** — Works on desktop, tablet, and mobile
+- **Smooth Animations** — Polished transitions and micro-interactions
+- **Toast Notifications** — Real-time feedback for all actions
 
-## 🎯 Live Demo & Examples
+---
 
-🌐 **Try TaskFlow Now**: [https://taskflow-sagar.vercel.app/](https://taskflow-sagar.vercel.app/)
+## 🔐 Role-Based Access Control
 
-### 🎮 Interactive Demo
-Experience TaskFlow without signing up! Use our demo account to explore all features:
+TaskFlow implements a **two-tier RBAC system**:
 
-```
-📧 Demo Email: atharvawandhare@gmail.com
-🔑 Demo Password: 12345678
-```
+### 👑 Admin
+| Capability | Status |
+|---|---|
+| Create tasks | ✅ |
+| Edit tasks | ✅ |
+| Delete tasks | ✅ |
+| Assign tasks to members | ✅ |
+| Add/edit/delete categories | ✅ |
+| View all assigned/created tasks | ✅ |
+| Fetch full user list | ✅ |
 
-### 🌟 What You Can Try:
-- ✅ Create and manage tasks with different priorities
-- 🎨 Organize tasks with custom categories and colors
-- 📅 Set due dates and track deadlines
-- 📱 Test the responsive design on your mobile device
-- 🔍 Use advanced search and filtering options
-- 📊 View task analytics and progress tracking
+### 👤 Member
+| Capability | Status |
+|---|---|
+| View tasks assigned to them | ✅ |
+| Toggle task completion | ✅ |
+| Create tasks | ❌ |
+| Edit/Delete tasks | ❌ |
+| Assign tasks | ❌ |
+| Add/Delete categories | ❌ |
 
-### 🎯 Perfect Use Cases:
-- **Software Development**: Track bugs, features, and sprint tasks
-- **Project Management**: Coordinate team deliverables and milestones  
-- **Academic Work**: Organize assignments, research, and study schedules
-- **Personal Productivity**: Manage daily tasks, goals, and habits
-- **Small Business**: Track client work, deadlines, and business tasks
+> Members see a **"👁️ View-only mode"** notice in the sidebar and all write actions are hidden from the UI.
 
-## 🛠️ Technology Stack
+### How Assignment Works
+1. Admin opens **Add Task** → sees a purple **"🎯 Assign To"** dropdown listing all users
+2. Selects a member → task is created with `assignedTo = member._id`
+3. Member logs in → backend returns tasks where `userId = me OR assignedTo = me`
+4. Task appears in member's dashboard with **"Assigned by [Admin Name]"** badge ✅
 
-### 🎨 Frontend Technologies
-- **React 18** - Latest React with hooks, context, and concurrent features
-- **Vite** - Lightning-fast build tool and development server
-- **Tailwind CSS** - Utility-first CSS framework for rapid UI development
-- **Framer Motion** - Production-ready motion library for React animations
-- **Lucide React** - Beautiful, customizable icon library
-- **Radix UI** - Low-level UI primitives for accessibility and customization
-- **React Router** - Declarative routing for React applications
-
-### ⚙️ Backend Technologies  
-- **Node.js** - JavaScript runtime built on Chrome's V8 JavaScript engine
-- **Express.js** - Fast, unopinionated web framework for Node.js
-- **MongoDB** - Document-oriented NoSQL database for flexible data storage
-- **Mongoose** - Elegant MongoDB object modeling for Node.js
-- **JWT (jsonwebtoken)** - Industry standard for secure token-based authentication
-- **bcryptjs** - Password hashing library for Node.js
-- **CORS** - Cross-Origin Resource Sharing middleware
-
-### 🚀 DevOps & Deployment
-- **Vercel** - Frontend deployment with automatic deployments from Git
-- **Render** - Backend hosting with auto-scaling and monitoring
-- **MongoDB Atlas** - Cloud database with built-in security and monitoring
-- **Git & GitHub** - Version control and collaborative development
-- **ESLint & Prettier** - Code linting and formatting for consistency
-
-### 📱 Development Tools
-- **VS Code** - Recommended IDE with React and Node.js extensions
-- **Postman** - API testing and documentation
-- **MongoDB Compass** - GUI for MongoDB database management
-- **React DevTools** - Browser extension for debugging React components
+---
 
 ## 🚀 Quick Start Guide
 
 ### ⚡ Prerequisites
-- **Node.js** (v16 or higher) - [Download here](https://nodejs.org/)
-- **npm** or **yarn** package manager
-- **MongoDB** (local installation or [MongoDB Atlas](https://www.mongodb.com/atlas) account)
-- **Git** for version control
+- **Node.js** v16+ — [Download](https://nodejs.org/)
+- **npm** or **yarn**
+- **MongoDB** (local or [MongoDB Atlas](https://www.mongodb.com/atlas))
+- **Git**
 
-### 📦 Installation Steps
+### 📦 Installation
 
 #### 1. Clone the Repository
 ```bash
-# Clone TaskFlow repository
-git clone https://github.com/gyaneshsingh09/taskflow.git
+git clone https://github.com/gyaneshsiingh/taskflow.git
 cd taskflow
 ```
 
 #### 2. Install Dependencies
 ```bash
-# Install root dependencies for concurrent development
-npm install
-
 # Install client dependencies
-cd client
-npm install
+cd client && npm install
 
-# Install server dependencies  
-cd ../server
-npm install
+# Install server dependencies
+cd ../server && npm install
 cd ..
 ```
 
 #### 3. Environment Setup
 
-Create environment files for both client and server:
-
-**📁 Client Environment (client/.env)**
+**📁 Client (`client/.env`)**
 ```env
-# Client Configuration
 VITE_API_URL=http://localhost:3000/api
 VITE_APP_NAME=TaskFlow
-VITE_APP_VERSION=1.0.0
 ```
 
-**📁 Server Environment (server/.env)**
+**📁 Server (`server/.env`)**
 ```env
-# Server Configuration
 NODE_ENV=development
 PORT=3000
 
-# Database Configuration
+# MongoDB
 MONGODB_URI=mongodb://localhost:27017/taskflow
-# Or use MongoDB Atlas:
+# Or Atlas:
 # MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/taskflow
 
-# Authentication
+# Auth
 JWT_SECRET=your-super-secret-jwt-key-min-32-characters
 JWT_EXPIRES_IN=7d
 BCRYPT_SALT_ROUNDS=12
 
-# CORS Configuration
+# CORS
 CLIENT_URL=http://localhost:5173
 ```
 
 #### 4. Start Development Servers
 ```bash
-# Option 1: Start both client and server simultaneously (Recommended)
+# Both client + server (recommended)
 npm run dev
 
-# Option 2: Start them separately in different terminals
-# Terminal 1 - Start server
-cd server && npm run dev
-
-# Terminal 2 - Start client  
-cd client && npm run dev
+# Or separately:
+cd server && npm run dev    # Terminal 1
+cd client && npm run dev    # Terminal 2
 ```
 
-#### 5. Access the Application
+#### 5. Access the App
 - **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:3000
-- **API Documentation**: http://localhost:3000/api-docs (if configured)
+- **Backend API**: http://localhost:3000/api
 
-### 🎯 First Steps After Installation
-1. **Create Account** - Register a new user account
-2. **Create Categories** - Set up task categories for organization
-3. **Add Your First Task** - Start with a simple task to test functionality
-4. **Explore Features** - Try different priorities, due dates, and filters
+### 🎯 First Steps
+1. **Register as Admin** — Pick "Admin" role on signup
+2. **Register team members** — Have teammates sign up as "Member"
+3. **Create a task** — Fill in title, description, priority, category
+4. **Assign it** — Use the "🎯 Assign To" dropdown to assign to a member
+5. **Member logs in** — They'll see the assigned task in their dashboard ✅
+
+---
+
+## 🎯 Live Demo
+
+🌐 **Try TaskFlow**: [https://taskflow-indol-six.vercel.app](https://taskflow-indol-six.vercel.app)
+
+### 🎮 Demo Accounts
+```
+👑 Admin Account:
+📧 Email: admin@demo.com
+🔑 Password: demo1234
+
+👤 Member Account:
+📧 Email: member@demo.com  
+🔑 Password: demo1234
+```
+
+---
+
+## 🛠️ Technology Stack
+
+### 🎨 Frontend
+| Technology | Purpose |
+|---|---|
+| **React 18** | Component-based UI with hooks |
+| **Vite** | Fast dev server and build tool |
+| **Tailwind CSS** | Utility-first styling |
+| **Lucide React** | Icon library |
+| **Radix UI / shadcn** | Accessible UI primitives |
+| **React Router v6** | Client-side routing |
+| **Axios** | HTTP client for API calls |
+
+### ⚙️ Backend
+| Technology | Purpose |
+|---|---|
+| **Node.js** | JavaScript runtime |
+| **Express.js** | REST API framework |
+| **MongoDB** | NoSQL document database |
+| **Mongoose** | MongoDB ODM |
+| **JWT** | Stateless authentication |
+| **bcryptjs** | Password hashing |
+| **CORS** | Cross-origin request handling |
+
+### 🚀 Deployment
+| Service | Purpose |
+|---|---|
+| **Vercel** | Frontend hosting |
+| **Render / Railway** | Backend hosting |
+| **MongoDB Atlas** | Cloud database |
+
+---
 
 ## 📁 Project Architecture
 
-TaskFlow follows a clean, scalable architecture pattern separating frontend and backend concerns:
-
 ```
-taskflow/                           # Root project directory
-├── 📁 client/                     # React Frontend Application
-│   ├── 📁 public/                 # Static assets and favicon
-│   │   ├── vite.svg              # Vite logo
-│   │   └── index.html            # HTML template
-│   ├── 📁 src/                   # Source code
-│   │   ├── 📁 components/        # Reusable React components
-│   │   │   ├── 📁 landing/       # Landing page components
-│   │   │   │   ├── hero-section.jsx
-│   │   │   │   ├── features-section.jsx
-│   │   │   │   ├── cta-section.jsx
-│   │   │   │   └── pricing-section.jsx
-│   │   │   ├── 📁 layout/        # Layout and navigation components
-│   │   │   │   ├── navbar.jsx
-│   │   │   │   ├── footer.jsx
-│   │   │   │   └── not-found.jsx
-│   │   │   └── 📁 ui/            # UI components (shadcn/ui)
-│   │   │       ├── button.jsx
-│   │   │       ├── card.jsx
-│   │   │       ├── input.jsx
-│   │   │       ├── form.jsx
-│   │   │       └── dialog.jsx
-│   │   ├── 📁 lib/               # Utilities and configurations
-│   │   │   ├── utils.js          # Helper functions
-│   │   │   └── api.js            # API configuration
-│   │   ├── 📁 pages/             # Page components and routes
-│   │   │   ├── landing-page.jsx  # Marketing landing page
-│   │   │   ├── login-page.jsx    # User authentication
-│   │   │   ├── signup-page.jsx   # User registration
-│   │   │   ├── dashboard.jsx     # Main task management dashboard
-│   │   │   ├── about-page.jsx    # About page
-│   │   │   ├── privacy-page.jsx  # Privacy policy
-│   │   │   └── terms-page.jsx    # Terms of service
-│   │   ├── 📁 assets/            # Images and static files
-│   │   │   ├── react.svg
-│   │   │   ├── auth.png
-│   │   │   └── image.png
-│   │   ├── App.jsx               # Main App component
-│   │   ├── main.jsx              # Application entry point
-│   │   ├── index.css             # Global styles
-│   │   └── App.css               # Component styles
-│   ├── package.json              # Client dependencies
-│   ├── vite.config.js            # Vite configuration
-│   ├── tailwind.config.js        # Tailwind CSS configuration
-│   └── eslint.config.js          # ESLint configuration
-├── 📁 server/                     # Node.js Backend API
-│   ├── 📁 src/                   # Server source code
-│   │   ├── 📁 controllers/       # Route controllers (business logic)
-│   │   │   ├── authControllers.js    # Authentication logic
-│   │   │   └── todoController.js     # Task management logic
-│   │   ├── 📁 middleware/        # Custom middleware functions
-│   │   │   └── auth.js           # JWT authentication middleware
-│   │   ├── 📁 models/            # MongoDB data models
-│   │   │   ├── user.models.js    # User schema and methods
-│   │   │   ├── todo.models.js    # Task schema and methods
-│   │   │   └── category.models.js # Category schema and methods
-│   │   ├── 📁 routes/            # API route definitions
-│   │   │   ├── auth.js           # Authentication routes
-│   │   │   └── todos.js          # Task management routes
-│   │   ├── 📁 db/                # Database configuration
-│   │   │   └── index.js          # MongoDB connection setup
-│   │   ├── app.js                # Express app configuration
-│   │   ├── index.js              # Server entry point
-│   │   └── constant.js           # Application constants
-│   ├── package.json              # Server dependencies
-│   └── render.yaml               # Render deployment configuration
-├── 📁 screenshots/               # Application screenshots for README
-│   ├── home.png                  # Landing page screenshot
-│   ├── features.png              # Features showcase
-│   ├── signin.png                # Authentication interface
-│   ├── macui.png                 # MacBook UI demo
-│   └── footer.png                # Footer design
-├── package.json                  # Root package.json for concurrent development
-├── README.md                     # Project documentation
-└── LICENSE                       # MIT license file
+taskflow/
+├── 📁 client/                        # React Frontend
+│   └── 📁 src/
+│       ├── 📁 components/
+│       │   ├── 📁 landing/           # Landing page sections
+│       │   │   ├── hero-section.jsx
+│       │   │   └── features-section.jsx
+│       │   ├── 📁 layout/            # Navbar, Footer
+│       │   ├── 📁 ui/                # shadcn/ui components
+│       │   ├── login-form.jsx        # Login (saves role to localStorage)
+│       │   └── signup-form.jsx       # Signup with Admin/Member selector
+│       ├── 📁 pages/
+│       │   ├── dashboard.jsx         # Main dashboard (RBAC-aware)
+│       │   ├── landing-page.jsx
+│       │   ├── login-page.jsx
+│       │   └── signup-page.jsx
+│       └── 📁 lib/
+│           ├── api.js                # Axios instance
+│           └── utils.js
+│
+├── 📁 server/
+│   └── 📁 src/
+│       ├── 📁 controllers/
+│       │   ├── authControllers.js    # register, login, getProfile, getAllUsers
+│       │   ├── todoController.js     # CRUD + assignment-aware filtering
+│       │   ├── categoryController.js
+│       │   └── projectController.js
+│       ├── 📁 middleware/
+│       │   └── auth.js               # protect + requireRole() middleware
+│       ├── 📁 models/
+│       │   ├── user.models.js        # User schema with role field
+│       │   ├── todo.models.js        # Todo schema with assignedTo field
+│       │   ├── project.models.js     # Project with member roles
+│       │   └── category.models.js
+│       ├── 📁 routes/
+│       │   ├── auth.js               # Auth + GET /users (admin only)
+│       │   ├── todos.js
+│       │   ├── categories.js
+│       │   └── projects.js
+│       └── app.js
+└── README.md
 ```
 
-### 🏗️ Architecture Patterns
-- **Frontend**: Component-based React architecture with hooks and context
-- **Backend**: RESTful API with Express.js and MongoDB
-- **Authentication**: JWT-based stateless authentication
-- **Database**: Document-oriented storage with Mongoose ODM
-- **Styling**: Utility-first CSS with Tailwind CSS
-- **State Management**: React Context API and local state
+### 🏗️ Architecture Highlights
+- **RBAC via Middleware** — `requireRole('admin')` guards sensitive routes
+- **Assignment-Aware Queries** — MongoDB `$and`/`$or` ensures members see assigned tasks
+- **Role in JWT payload** — Decoded on every request, no extra DB lookup needed
+- **localStorage Role Cache** — UI reads `userRole` from localStorage for instant rendering
+
+---
 
 ## 🎨 Screenshots
 
 ### 🏠 Landing Page
 ![Landing Page](screenshots/home.png)
-*Modern landing page with hero section and feature highlights*
+*Full-width hero with feature highlights*
 
-### 📊 Dashboard
+### 📊 Admin Dashboard
 ![Dashboard](screenshots/features.png)
-*Comprehensive dashboard with analytics and task overview*
+*Admin sees Add Task, Edit, Delete, and the Assign To dropdown*
 
-### 🔐 Authentication
+### 🔐 Signup with Role Selection
 ![Sign In](screenshots/signin.png)
-*Clean and secure authentication interface*
+*Role selector: Admin (🟣 shield) or Member (🔵 user)*
 
-### 💻 MacBook UI Demo
+### 💻 MacBook Demo
 ![MacBook UI](screenshots/macui.png)
-*Interactive MacBook scroll component showcasing the application*
+*Interactive MacBook scroll component*
 
-### 📱 Footer
-![Footer](screenshots/footer.png)
-*Professional footer with links and developer information*
+---
 
 ## 🔧 Configuration
 
 ### Database Setup
 
-**MongoDB Local Setup:**
+**Local MongoDB:**
 ```bash
-# Install MongoDB
 # macOS
 brew install mongodb/brew/mongodb-community
+brew services start mongodb/brew/mongodb-community
 
 # Ubuntu
-sudo apt-get install mongodb
-
-# Start MongoDB
-mongod
+sudo apt-get install -y mongodb
+sudo systemctl start mongodb
 ```
 
-**MongoDB Atlas Setup:**
-1. Create account at [MongoDB Atlas](https://www.mongodb.com/atlas)
-2. Create a new cluster
-3. Get connection string
-4. Add to server `.env` file
+**MongoDB Atlas:**
+1. Create account at [mongodb.com/atlas](https://www.mongodb.com/atlas)
+2. Create a free cluster
+3. Whitelist your IP
+4. Copy connection string → paste into `server/.env`
 
-### Environment Variables
+### Environment Variables Reference
 
-**Required Server Environment Variables:**
-- `MONGODB_URI` - MongoDB connection string
-- `JWT_SECRET` - Secret key for JWT tokens
-- `CLIENT_URL` - Frontend URL for CORS
-- `PORT` - Server port (default: 3000)
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `MONGODB_URI` | ✅ | — | MongoDB connection string |
+| `JWT_SECRET` | ✅ | — | Secret key (min 32 chars) |
+| `CLIENT_URL` | ✅ | — | Frontend URL for CORS |
+| `PORT` | ❌ | 3000 | Server port |
+| `NODE_ENV` | ❌ | development | Environment mode |
+| `JWT_EXPIRES_IN` | ❌ | 7d | Token expiry duration |
+| `BCRYPT_SALT_ROUNDS` | ❌ | 12 | Password hashing rounds |
 
-**Optional Server Environment Variables:**
-- `NODE_ENV` - Environment (development/production)
-- `JWT_EXPIRES_IN` - JWT expiration time
-- `BCRYPT_SALT_ROUNDS` - Password hashing rounds
+---
 
-## 📱 API Documentation
+## 📱 API Reference
 
 ### Authentication Endpoints
 
@@ -388,7 +365,8 @@ Content-Type: application/json
 {
   "name": "John Doe",
   "email": "john@example.com",
-  "password": "password123"
+  "password": "password123",
+  "role": "admin"           // "admin" | "member" (default: "member")
 }
 ```
 
@@ -400,6 +378,19 @@ Content-Type: application/json
   "email": "john@example.com",
   "password": "password123"
 }
+
+// Response includes: { user: { id, name, email, role }, token }
+```
+
+```http
+GET /api/auth/profile
+Authorization: Bearer <token>
+```
+
+```http
+GET /api/auth/users
+Authorization: Bearer <token>       // Admin only
+// Returns all users for task assignment dropdown
 ```
 
 ### Task Endpoints
@@ -407,18 +398,30 @@ Content-Type: application/json
 ```http
 GET /api/todos
 Authorization: Bearer <token>
+// Returns tasks created by user OR assigned to user
 
 POST /api/todos
 Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "title": "Task Title",
-  "description": "Task Description",
+  "title": "Design homepage",
+  "description": "Create wireframes and mockups for the new homepage",
   "priority": "high",
-  "category": "work",
-  "dueDate": "2024-12-31"
+  "category": "design",
+  "dueDate": "2025-06-01",
+  "assignedTo": "<userId>"    // Optional: assign to a member (admin only)
 }
+
+PUT /api/todos/:id
+Authorization: Bearer <token>
+
+PATCH /api/todos/:id/toggle
+Authorization: Bearer <token>
+// Toggle complete — available to task owner OR assignee
+
+DELETE /api/todos/:id
+Authorization: Bearer <token>       // Admin / task owner only
 ```
 
 ### Category Endpoints
@@ -432,70 +435,83 @@ Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "name": "Category Name",
-  "color": "bg-blue-500"
+  "name": "Design",
+  "color": "#3b82f6"
 }
+
+PUT /api/categories/:id
+Authorization: Bearer <token>
+
+DELETE /api/categories/:id
+Authorization: Bearer <token>
 ```
+
+### Middleware Usage
+
+```js
+import { protect, requireRole } from '../middleware/auth.js';
+
+// Authenticated routes
+router.get('/profile', protect, getProfile);
+
+// Admin-only routes
+router.get('/users', protect, requireRole('admin'), getAllUsers);
+router.delete('/tasks/:id', protect, requireRole('admin'), deleteTask);
+```
+
+---
 
 ## 🤝 Contributing
 
-We welcome contributions! Please follow these steps:
+Contributions are welcome! Please follow these steps:
 
 1. **Fork the repository**
 2. **Create a feature branch**
-```bash
-git checkout -b feature/amazing-feature
-```
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
 3. **Commit your changes**
-```bash
-git commit -m 'Add some amazing feature'
-```
+   ```bash
+   git commit -m 'feat: add your feature description'
+   ```
 4. **Push to the branch**
-```bash
-git push origin feature/amazing-feature
-```
+   ```bash
+   git push origin feature/your-feature-name
+   ```
 5. **Open a Pull Request**
 
 ### Development Guidelines
+- Follow existing code style and naming conventions
+- Write meaningful, descriptive commit messages
+- Add comments for complex business logic
+- Test all role scenarios (admin & member) before submitting
+- Update this README if you add new features or API endpoints
 
-- Follow the existing code style
-- Write meaningful commit messages
-- Add comments for complex logic
-- Test your changes thoroughly
-- Update documentation as needed
-
-### Code Style
-
-- Use ESLint and Prettier for formatting
-- Follow React best practices
-- Use TypeScript-style JSDoc comments
-- Maintain consistent naming conventions
+---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Developer
+---
+
+## 👨‍💻 About the Developer
 
 <div align="center">
 
 ### Gyanesh Singh
 *Full Stack Developer*
 
-[![GitHub](https://img.shields.io/badge/GitHub-gyaneshsingh09-black?style=for-the-badge&logo=github)](https://github.com/gyaneshsingh09)
+[![GitHub](https://img.shields.io/badge/GitHub-gyaneshsiingh-black?style=for-the-badge&logo=github)](https://github.com/gyaneshsiingh)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-gyaneshsingh-blue?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/gyaneshsingh)
 [![Email](https://img.shields.io/badge/Email-gyaneshsingh@gmail.com-red?style=for-the-badge&logo=gmail)](mailto:gyaneshsingh@gmail.com)
-[![Behance](https://img.shields.io/badge/Behance-sagarwaghmare-blue?style=for-the-badge&logo=behance)](https://www.behance.net/gyaneshsingh)
 
 </div>
 
-### About the Developer
-
-Passionate full-stack developer with expertise in modern web technologies. Specializing in:
-
+Passionate full-stack developer specializing in:
 - **Frontend**: React.js, Tailwind CSS, Modern UI/UX Design
 - **Backend**: Node.js, Express.js, MongoDB, RESTful APIs
-- **Mobile**: Responsive Design, Progressive Web Apps
+- **Architecture**: RBAC systems, JWT auth, real-time collaboration
 
 ---
 
@@ -503,8 +519,8 @@ Passionate full-stack developer with expertise in modern web technologies. Speci
 
 **⭐ If you found this project helpful, please give it a star! ⭐**
 
-**🚀 [Visit TaskFlow Live](https://taskflow-indol-six.vercel.app) | 📖 [Read the Docs](#) | 🐛 [Report Bug](https://github.com/gyaneshsingh09/taskflow/issues)**
+**🚀 [Visit TaskFlow Live](https://taskflow-indol-six.vercel.app) | 🐛 [Report Bug](https://github.com/gyaneshsiingh/taskflow/issues) | 💡 [Request Feature](https://github.com/gyaneshsiingh/taskflow/issues)**
 
-Made with ❤️ by [Gyanesh Singh](https://github.com/gyaneshsingh09)
+Made with ❤️ by [Gyanesh Singh](https://github.com/gyaneshsiingh)
 
 </div>
